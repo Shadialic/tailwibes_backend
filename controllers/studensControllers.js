@@ -2,8 +2,6 @@ import StudentDb from "../models/studentsModel.js";
 
 const postStudent = async (req, res) => {
   try {
-    console.log(req.body,'pdpd');
-    
     const { fullName, subject, mark,tutorId } = req.body;
     const existingStudent = await StudentDb.findOne({ fullName, subject });
     if (existingStudent) {
@@ -37,8 +35,6 @@ const postStudent = async (req, res) => {
 const getStudent = async (req, res) => {
   try {
     const { id } = req.params;
-    console.log(id,'tutorId');
-    
     if (!id) {
       return res
         .status(400)
