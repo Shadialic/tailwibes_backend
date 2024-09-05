@@ -41,8 +41,6 @@ const getStudent = async (req, res) => {
         .json({ status: false, message: "Tutor ID is required" });
     }
     const students = await StudentDb.find({tutorId: id });
-    console.log(students,'students');
-    
     res.status(200).json({ status: true, students });
   } catch (err) {
     res
@@ -116,7 +114,7 @@ const deleteAllStudents = async (req, res) => {
 const searchStudents = async (req, res) => {
   try {
     const searchQuery = req.query.search;
-
+    const { tutorId } = req.Data;
     let searchCriteria = {
       $or: [
         { fullName: { $regex: searchQuery, $options: "i" } },
@@ -127,15 +125,14 @@ const searchStudents = async (req, res) => {
     if (!isNaN(markQuery)) {
       searchCriteria.$or.push({ mark: markQuery });
     }
-    const students = await StudentDb.find(searchCriteria);
+    const students = await StudentDb.find({ tutorId, ...searchCriteria });
     res.status(200).json({ status: true, students });
   } catch (err) {
-    res
-      .status(500)
-      .json({ status: false, message: "Server error", error: err.message });
+    res.status(500).json({ status: false, message: "Server error", error: err.message });
     console.log(err);
   }
 };
+
 
 export {
   postStudent,

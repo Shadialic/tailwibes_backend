@@ -37,7 +37,6 @@ const postTeacher = async (req, res) => {
 };
 const loginTeacher = async (req, res) => {
   try {
-    console.log(req.body);
     const { email, password } = req.body;
     const exist = await TeacherDb.findOne({ email });
     if (exist) {
